@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: grafana-deploy
+   namespace: default
+spec:
+   replicas: 2
+   selector:
+      matchLabels:
+         app: grafana
+   template:
+      metadata:
+        labels: 
+           app: grafana
+      spec:
+        containers:
+          - name: grafana
+            image: grafana/grafana
+            env:
+              - name: GF_INSTALL_PLUGINS
+                value: grafana-clock-panel,grafana-simple-json-datasource
+              - name: GRAFANA_VERSION
+                value: latest
+            ports:
+            - containerPort: 3000
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  selector:
+    app: grafana
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: LoadBalancer
+  
+      

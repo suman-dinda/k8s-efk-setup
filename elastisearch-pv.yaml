@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv0003
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: do-block-storage
+  nodeAffinity:
+     required:
+       nodeSelectorTerms:
+       - matchExpressions:
+         - key: kubernetes.io/hostname
+           operator: In
+           values:
+                - aks-nodepool1-25659417-vmss000000
